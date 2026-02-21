@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hygge Household – Connecting…</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #f5f0eb;
+      color: #2c2825;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .icon { font-size: 3rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+    p { color: #6b5e52; font-size: 1rem; line-height: 1.5; }
+    .error { color: #c0392b; }
+  </style>
+  <script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const error = params.get('error');
+
+      if (code) {
+        // Try to deep-link back into the iOS app via Universal Link / custom scheme
+        const deepLink = 'hyggehousehold://callback?code=' + encodeURIComponent(code)
+          + (params.get('state') ? '&state=' + encodeURIComponent(params.get('state')) : '');
+        window.location.href = deepLink;
+
+        // Fallback message shown if the app doesn't open
+        document.getElementById('status').innerHTML =
+          '<div class="icon">✅</div>' +
+          '<h1>Sonos Connected</h1>' +
+          '<p>Return to the Hygge Household app to continue.</p>';
+      } else if (error) {
+        document.getElementById('status').innerHTML =
+          '<div class="icon">❌</div>' +
+          '<h1>Authorization Failed</h1>' +
+          '<p class="error">' + error + '</p>';
+      }
+    };
+  </script>
+</head>
+<body>
+  <div id="status">
+    <div class="icon">🕯️</div>
+    <h1>Connecting to Sonos…</h1>
+    <p>Please wait while we complete authorization.</p>
+  </div>
+</body>
+</html>

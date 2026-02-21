@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "T797L7ZU53.com.hyggedash.app",
+        "paths": ["/callback", "/callback/*"]
+      }
+    ]
+  }
+}
