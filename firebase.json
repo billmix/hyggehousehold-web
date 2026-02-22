@@ -8,8 +8,14 @@
         "headers": [{ "key": "Content-Type", "value": "application/json" }]
       }
     ],
+    "redirects": [
+      {
+        "source": "/callback",
+        "destination": "hyggehousehold://callback",
+        "type": 302
+      }
+    ],
     "rewrites": [
-      { "source": "/callback", "destination": "/callback/index.html" },
       { "source": "**", "destination": "/index.html" }
     ]
   }

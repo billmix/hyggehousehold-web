@@ -7,5 +7,10 @@
         "paths": ["/callback", "/callback/*"]
       }
     ]
+  },
+  "webcredentials": {
+    "apps": [
+      "T797L7ZU53.com.hyggedash.app"
+    ]
   }
 }

@@ -2,6 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // Immediately redirect to the app's custom URL scheme.
+    // This must run before the page renders so ASWebAuthenticationSession
+    // intercepts the navigation.
+    (function() {
+      var params = window.location.search;
+      var hash = window.location.hash;
+      if (params) {
+        var sp = new URLSearchParams(params);
+        var code = sp.get('code');
+        if (code) {
+          var deepLink = 'hyggehousehold://callback' + params + hash;
+          window.location.replace(deepLink);
+          return;
+        }
+        var error = sp.get('error');
+        if (error) {
+          document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('status').innerHTML =
+              '<div class="icon">❌</div>' +
+              '<h1>Authorization Failed</h1>' +
+              '<p class="error">' + error + '</p>';
+          });
+          return;
+        }
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hygge Household – Connecting…</title>
   <style>
@@ -22,31 +50,6 @@
     p { color: #6b5e52; font-size: 1rem; line-height: 1.5; }
     .error { color: #c0392b; }
   </style>
-  <script>
-    window.onload = function () {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
-      const error = params.get('error');
-
-      if (code) {
-        // Try to deep-link back into the iOS app via Universal Link / custom scheme
-        const deepLink = 'hyggehousehold://callback?code=' + encodeURIComponent(code)
-          + (params.get('state') ? '&state=' + encodeURIComponent(params.get('state')) : '');
-        window.location.href = deepLink;
-
-        // Fallback message shown if the app doesn't open
-        document.getElementById('status').innerHTML =
-          '<div class="icon">✅</div>' +
-          '<h1>Sonos Connected</h1>' +
-          '<p>Return to the Hygge Household app to continue.</p>';
-      } else if (error) {
-        document.getElementById('status').innerHTML =
-          '<div class="icon">❌</div>' +
-          '<h1>Authorization Failed</h1>' +
-          '<p class="error">' + error + '</p>';
-      }
-    };
-  </script>
 </head>
 <body>
   <div id="status">
